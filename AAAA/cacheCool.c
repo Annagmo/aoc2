@@ -51,7 +51,7 @@ int main( int argc, char *argv[ ] )
 			//para ler o arq binario:
 			unsigned char buffer[50]; //linha de enderecos
 			fread(buffer,sizeof(buffer),1,fptr); // le 50 bytes pro buffer
-    		for(i = 0; i<50; i++)
+    			for(i = 0; i<50; i++)
     			printf("%u ", buffer[i]); // imprime serie de bytes
 
 			printf("\n");
