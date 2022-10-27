@@ -24,7 +24,6 @@ int main( int argc, char *argv[ ] )
 	//printf("flagOut = %d\n", flagOut);
 	//printf("arquivo = %s\n", arquivoEntrada);
 
-
     // Seu codigo vai aqui
 	
 		int miss_compulsorio =0, n_bits_tag =0;
