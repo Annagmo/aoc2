@@ -43,27 +43,34 @@ int main( int argc, char *argv[ ] )
 		//descobre o número de bits de cada parcela do endereço para todos os endereços do arquivo
 
 		FILE *fptr;
-		fptr = fopen(arquivoEntrada, "rb");
+		fptr = fopen(arquivoEntrada, "rb"); //aprendi hoje q tinha q ser rb.
 
 
 		while (fgetc(fptr) != EOF )
 		{
 			//para ler o arq binario:
-			unsigned char buffer[1]; //linha de enderecos
-			fread(buffer,sizeof(buffer),1,fptr); // le 50 bytes pro buffer
-			if(buffer[0]!=0)
-    		printf("%u ", buffer[0]); // imprime serie de bytes
+			unsigned char buffer[1]; //o buffer vai pegar de endereco por endereco
+			fread(buffer,sizeof(buffer),1,fptr); // le 1 byte para o buffef. Vai de um em um pq se pegasse todos teria que iterar a lista e ver hit/miss de cada 1.
+
+			if(buffer[0]!=0){ //de alguma forma a lista ta ficando:    endereco  0  endereco  0  endereco  0  .... entao apreciem minha gambiarra: se nao for 0 entra no calculo.
+    			printf("%u ", buffer[0]); // imprime serie de bytes
+				endereco = buffer[0]; //pega cada byte e bota pra o endereco cada um na sua vez
+			}
 			//--------------
-			if(buffer[0]!=0)
-				endereco = buffer[0]; //pega o primeiro byte do buffer so pra testar se isso funciona
 
+			 //essa tristeza desse treco ta em pseudo codigo. O tal >> no existe em C. E ai como nao existe o codigo passa direto pelos dois primeiros ifs que tem alguma condiçao 
+			 // e cai no if que conta  tudo como miss de capacidade e de conflito.
 
-			tag = endereco >> (n_bits_offset + n_bits_indice);
+			tag = endereco >> (n_bits_offset + n_bits_indice);  
 			indice = (endereco >> n_bits_offset) & (2^n_bits_indice -1);
 			//isso é uma máscara que vai deixar apenas os bits do índice na variável “endereço”.
+
+			//--------------------------
+
+
 			qtd_acessos++;
 
-			if(assoc ==1){ //MD
+			if(assoc ==1){ //Mapeamento Direto
 				// para o mapeamento direto
 				if (cache_val[indice] == 0)
 				{
@@ -92,7 +99,7 @@ int main( int argc, char *argv[ ] )
 				}
 			} 
 
-			if(nsets == 1){   //tot assoc
+			if(nsets == 1){   //totalmente associativo
 			}
 		
 		}
@@ -104,6 +111,7 @@ int main( int argc, char *argv[ ] )
 
 		if(flagOut==0){
 			printf("---------------------\n");
+			printf("Qntd Acessos: %d\n",qtd_acessos); //isso nao faz parte do print q ele quer mas eh teste pra ver se pelo menos ele le os 100 end.  ( ta com 201 [100 zeros],[100 enderecos][1 EOF] )
 			printf("Taxa de hit: %f\n",taxa_hit);
 			printf("Taxa de miss: %f\n",taxa_miss);
 			printf("Taxa de miss de compulsório: %f\n",taxa_miss_comp);
@@ -118,3 +126,7 @@ int main( int argc, char *argv[ ] )
 		
 	return 0;
 }
+
+
+
+
