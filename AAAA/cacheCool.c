@@ -46,22 +46,20 @@ int main( int argc, char *argv[ ] )
 		fptr = fopen(arquivoEntrada, "rb");
 
 
-		//while (!EOF)
-		//{
+		while (fgetc(fptr) != EOF )
+		{
 			//para ler o arq binario:
-			unsigned char buffer[50]; //linha de enderecos
+			unsigned char buffer[1]; //linha de enderecos
 			fread(buffer,sizeof(buffer),1,fptr); // le 50 bytes pro buffer
-    			for(i = 0; i<50; i++)
-    			printf("%u ", buffer[i]); // imprime serie de bytes
-
-			printf("\n");
+			if(buffer[0]!=0)
+    		printf("%u ", buffer[0]); // imprime serie de bytes
 			//--------------
-			
-			endereco = buffer[0]; //pega o primeiro byte do buffer so pra testar se isso funciona
+			if(buffer[0]!=0)
+				endereco = buffer[0]; //pega o primeiro byte do buffer so pra testar se isso funciona
 
 
-			tag = (int)endereco >> (n_bits_offset + n_bits_indice);
-			indice = ((int)endereco >> n_bits_offset) & (2^n_bits_indice -1);
+			tag = endereco >> (n_bits_offset + n_bits_indice);
+			indice = (endereco >> n_bits_offset) & (2^n_bits_indice -1);
 			//isso é uma máscara que vai deixar apenas os bits do índice na variável “endereço”.
 			qtd_acessos++;
 
@@ -97,7 +95,7 @@ int main( int argc, char *argv[ ] )
 			if(nsets == 1){   //tot assoc
 			}
 		
-		//}
+		}
 		taxa_hit = hit/qtd_acessos;
 		taxa_miss = miss/qtd_acessos;
 		taxa_miss_cap = miss_capacidade/qtd_acessos;
