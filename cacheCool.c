@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -43,7 +42,7 @@ int main( int argc, char *argv[ ] )
 		fptr = fopen(arquivoEntrada, "rb"); //aprendi hoje q tinha q ser rb.
 		if(fptr == NULL) {
 			printf("Cannot open file \n");
-			exit(0); //se não puder abrir arq
+			exit(0); //se não puder abrir arquivo
 		}
 		while (!feof(fptr))
 		{
