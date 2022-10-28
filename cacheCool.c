@@ -24,9 +24,6 @@ int main( int argc, char *argv[ ] )
 	//printf("subst = %s\n", subst);
 	//printf("flagOut = %d\n", flagOut);
 	//printf("arquivo = %s\n", arquivoEntrada);
-
-
-    // Seu codigo vai aqui
 	
 		int miss_compulsorio =0, n_bits_tag =0;
 		int endereco = 0, tag =0, indice = 0, miss =0, hit =0, i =0, miss_conflito =0, miss_capacidade=0, qtd_acessos=0;
