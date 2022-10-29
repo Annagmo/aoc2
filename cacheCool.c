@@ -88,61 +88,65 @@ int main( int argc, char *argv[ ] )
 			indice = ( endereco & mask );
 			indice = indice >> n_bits_offset;
 
-			if(assoc == 1){ //Mapeamento Direto
-			if (cache_val[indice] == 0)
-			{
-				miss++; 		//nao tava contando os miss_compulsorio pro tot de misses.
-				miss_compulsorio++;
-				cache_val[indice] = 1;
-				cache_tag[indice] = tag;
-							// estas duas últimas instruções representam o tratamento da falta.
-			}
-			else
-				if (cache_tag[indice] == tag)
-					hit++;
-				else 			// a pos cheia e miss
+
+
+			if(assoc ==1){ //Mapeamento Direto
+				if (cache_val[indice] == 0 )
+				{
+					miss++; //nao tava contando os miss_compulsorio pro tot de misses.
+					miss_compulsorio++;
+					cache_val[indice] = 1;
+					cache_tag[indice] = tag;
+				// estas duas últimas instruções representam o tratamento da falta.
+				}
+				else if (cache_tag[indice] == tag){
+				hit++;
+				}
+
+				else if(cache_val[indice] != 0 ) //a posicao cheia eh miss
 				{
 					miss++;
-					
-					// conflito ou capacidade?
-					for(i=0; i < sizeof(cache_val); i++){
-						if(cache_val[i] == 0){
+					cache_val[indice] = 1;
+					//conflito ou capacidade?
+					for(i=0; i<sizeof(cache_val); i++){
+						if(cache_tag[indice] != tag){
 							miss_conflito++;
-							cache_val[indice] = 1;
 							cache_tag[indice] = tag;
-						}
-						else{miss_capacidade++;
-							indice = substitui(*subst, cache_val);
-							cache_val[indice] = 1;
-							cache_tag[indice] = tag;
+							for(int i=0; i<sizeof(cache_val);i++){
+								if(cache_val[i]==0){vazio++;}
+								else if(vazio==0)
+								{miss_capacidade++;
+								cache_tag[indice] = tag;
+								}
 							}
+						}	
 					}
+
 				}
+
 			} 
 			// Totalmente associativo
-			if (nsets == 1) {							// TA: n_conjuntos = tamanho da cachce 		      
-				if (cache_val[indice] == 0) {					// Compulsory miss
-					miss++; 
-					miss_compulsorio++;
-					cache_val[indice] = 1;					// Coloca os valores no local
-					cache_tag[indice] = tag;
-				} else { 
-					if (cache_tag[indice] == tag) {                         // Hit
-						hit++;
-					} else {						// Capacity miss
-						miss++; 
-						miss_capacidade++;																 
-						
-						indice = substitui(*subst, cache_val);          // Atribui o valor solicitado à posição escolhida
-						cache_val[indice] = 1;
-						cache_tag[indice] = tag;  	
-					}
-				} 
-			} 
-		}
+            if (nsets == 1) {                                      // TA: n_conjuntos = tamanho da cachce
+                if (cache_val[indice] == 0) {                      // Compulsory miss
+                    miss++; 
+                    miss_compulsorio++;
+                    cache_val[indice] = 1;                          // Coloca os valores no local
+                    cache_tag[indice] = tag;
+                } else { 
+                    if (cache_tag[indice] == tag) {               // Hit
+                        hit++;
+                    } else {                                      // Capacity miss
+                        miss++; 
+                        miss_capacidade++;
 
-			else{ //Conjunto Associativo
-				for(i=0; i<assoc; i++){    //HIT
+                        cache_tag[indice] = tag;                  // Coloca o valor solicitado no lugar
+                        cache_val[indice] = 1;
+                    }
+                } 
+            }
+
+			else{ //conjunto associativo
+				for(i=0; i<assoc; i++){ //HIT
 					if(cache[indice][i].tag == tag && cache[indice][i].val == 1){ //i representa o conjunto naquela posiçao. Ex.: Assoc = 2 temos cache[indice][0] e cache[indice][1]
 						hit++;
 						achou = 1;
@@ -200,7 +204,7 @@ int main( int argc, char *argv[ ] )
 			printf("%d, %f, %f, %f, %f, %f\n",qtd_acessos-1, taxa_hit/100, taxa_miss/100, taxa_miss_comp/100, taxa_miss_cap/100, taxa_miss_conf/100);
 		}
 		fclose(fptr);
-		
+
 	return 0;
 }
 
