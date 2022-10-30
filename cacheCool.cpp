@@ -4,9 +4,8 @@
 #include <string.h>
 #include <stdint.h>
 #include <time.h>
-#include <algorithm>    // std::find_if
 
-int substitui(char *sub, int assoc);
+int substitui(char *sub, int n_bits_indice);
 bool acha0(int *vetor,int tam);
 static void Help(){
 	printf("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
@@ -118,7 +117,7 @@ int main( int argc, char *argv[ ] )
 						miss++; 
 						miss_capacidade++;																 
 						
-						//indice = substitui(subst, cache_val,n_bits_indice);          // Atribui o valor solicitado à posição escolhida
+						indice = substitui(subst,n_bits_indice);          // Atribui o valor solicitado à posição escolhida 
 						cache_val[indice] = 1;
 						cache_tag[indice] = tag;  	
 					}
@@ -183,9 +182,9 @@ int main( int argc, char *argv[ ] )
 	return 0;
 }
 
-int substitui(char *sub, int assoc) {
-	if(*sub == 'r' || subst = 'R'){
-		return 1 + (rand() % assoc);		// gera aleatório entre 1 e a quantidade total de índice   
+int substitui(char *sub, int n_bits_indice) {
+	if(*sub == 'r' || *sub == 'R'){
+		return 1 + (rand() % n_bits_indice);		// gera aleatório entre 1 e a quantidade total de índice   
 	}
 }
 bool acha0(int *vetor,int tam){ 
