@@ -3,17 +3,16 @@
 #include <math.h>
 #include <string.h>
 #include <stdint.h>
-#include <time.h>
 
 int substitui(char *sub, int n_bits_indice);
 bool acha0(int *vetor,int tam);
 static void Help(){
-	printf("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
+	printf("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
 	printf("\t\tBem-vindo à cacheCool:\n");
 	printf(" Você digitou um número incorreto de argumentos. Utilize:\n");
 	printf("./cacheCool <nsets> <bsize> <assoc> <substituição> <flag_saida> arquivo_de_entrada\n");
 	printf("\n  Ex.: ./cacheCool 64 8 1 R 0 bin_100.bin\n");
-	printf("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
+	printf("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
 	exit(EXIT_FAILURE);
 }
 
@@ -29,10 +28,10 @@ int main( int argc, char *argv[ ] )
 	int flagOut = atoi(argv[5]);
 	char *arquivoEntrada = argv[6];
 
-		int miss_compulsorio =0, n_bits_tag =0;
+		int miss_compulsorio = 0, n_bits_tag = 0;
 		int endereco = 0, tag =0, indice = 0, miss =0, hit =0, i =0, miss_conflito =0, miss_capacidade=0, qtd_acessos=0;
 		float taxa_hit=0.0, taxa_miss=0.0, taxa_miss_comp=0.0,taxa_miss_conf=0.0, taxa_miss_cap=0.0;
-		int n_bits_offset =0, n_bits_indice =0;
+		int n_bits_offset = 0, n_bits_indice = 0;
 		int cache_val [nsets * assoc] = {0};  //é a lista dos bits de validade da cache
 		int cache_tag [nsets * assoc] = {0};  //é a lista dos bits de tag da cache
 		n_bits_offset = (log2(bsize));
@@ -117,9 +116,11 @@ int main( int argc, char *argv[ ] )
 						miss++; 
 						miss_capacidade++;																 
 						
-						indice = substitui(subst,n_bits_indice);          // Atribui o valor solicitado à posição escolhida 
-						cache_val[indice] = 1;
-						cache_tag[indice] = tag;  	
+						// Atribui o valor solicitado à posição escolhida aleatoriamente  
+                         			if(*subst == 'r' || *subst == 'R') {    
+                            				cache_val[1 + (rand() % (assoc-1))] = 1;   // gera aleatório entre 1 e a quantidade total de índice 
+						    	cache_tag[1 + (rand() % (assoc-1))] = tag;
+		               			}	
 					}
 				} 
 			} 
