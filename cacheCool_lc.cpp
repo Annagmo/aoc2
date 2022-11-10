@@ -207,3 +207,28 @@ bool acha0(int *vetor,int tam){  // trocar tudo isso por um contador
     }
 	return false;
 }
+
+//-----------------------------------------------------------------
+/*// Totalmente associativo          
+	if (nsets == 1) {		
+        	for (i=0; i < assoc; i++) {
+                	if (cache_val[i] == 1 && cache_tag[i] == tag){
+				hit++;
+			} else {
+				miss++;
+				if (cache_val[i] == 0) {
+					miss_compulsorio++;				
+					cache_tag[i] = tag;
+					cache_val[i] = 1;	
+				} 
+				else {
+					miss_capacidade++;																 
+					if(*subst == 'r' || *subst == 'R'){
+						i = substitui(assoc);
+						cache_tag[i] = tag;
+						cache_val[i] = 1;
+                            		}	
+				}	
+			}				 
+		} 
+	} */
