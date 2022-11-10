@@ -6,7 +6,6 @@
 #include <time.h>
 
 int substitui(char *sub, int assoc);
-bool acha0(int *vetor,int tam);
 static void Help(){
 	printf("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
 	printf("\t\tBem-vindo à cacheCool:\n");
@@ -54,7 +53,7 @@ int main( int argc, char *argv[ ] )
 		//----------------------------------------------------------
 		//variveis apos apresentaçao:
 		int qntdLinhas = 0;
-
+		int verificaCap = 0;
 
 
 		if(fptr == NULL) {
@@ -123,18 +122,10 @@ int main( int argc, char *argv[ ] )
 							cache[indice][i].val =1;
 							cache[indice][i].info = endereco;
 							CA_val_assoc[i] = 1;
+							verificaCap +=1;
 
 							//-----
 							break;
-						}
-						else if(acha0(CA_val_assoc,assoc) == false){
-							miss_capacidade++;
-							cache[indice][i].tag = tag;
-							cache[indice][i].val =1;
-							cache[indice][i].info = endereco;
-
-							//----
-							break;	
 						}
 						else if(cache[indice][i].val == 0){
 							miss_compulsorio++;
@@ -142,9 +133,19 @@ int main( int argc, char *argv[ ] )
 							cache[indice][i].val = 1;
 							cache[indice][i].info = endereco;
 							CA_val_assoc[i] = 1;
+							verificaCap += 1;
 
 							//-----
 							break;
+						}
+						else if(verificaCap == assoc){
+							miss_capacidade++;
+							cache[indice][i].tag = tag;
+							cache[indice][i].val =1;
+							cache[indice][i].info = endereco;
+							verificaCap =0;
+							//----
+							break;	
 						}
 				}
 			}
@@ -179,16 +180,4 @@ int substitui(char *sub, int assoc) {
 	if(*sub == 'r' || *sub == 'R'){
 		return (rand() % assoc);  
 	}
-}
-bool acha0(int *vetor,int tam){ 
-	int i;
-    for(i=0; i<tam; i++)
-    {
-        if(vetor[i]==0)
-        {
-            return true;		 
-        }
- 
-    }
-	return false;
 }
