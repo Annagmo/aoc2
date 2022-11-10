@@ -55,7 +55,6 @@ int main( int argc, char *argv[ ] )
 		int qntdLinhas = 0;
 		int verificaCap = 0;
 
-
 		if(fptr == NULL) {
 			printf("Cannot open file \n");
 			exit(0); //se não conseguir abrir o arquivo
