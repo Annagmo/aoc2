@@ -13,3 +13,7 @@ Atualizações no código pós apresentação:
   - unimos Totalmente Associativa com Conjunto Associativa
   - Na conj.Assoc: separamos o miss global dos for's dos miss específicos (compulsório, conflito e capacidade)
   - trocamos a lista que verificava miss de capacidade por um contador. (antes tinhamos uma lista de tam de assoc com 1's nas posições ocupadas e verificávamos se a lista estava cheia para ser miss de capacidade)
+  - colocamos um break em cada final de for, para que, depois que a cache ache seu hit ou miss, não fique comparando com os restos dos valores dos outros conjuntos. (antes estávamos contando miss de conflito e compulsório tudo na mesma escrita)
+
+Obstáculos persistentes:
+- para caches grandes temos uma taxa de hit muito alta. Mais de 99%, o que não é condizente com os resultados.
