@@ -115,38 +115,37 @@ int main( int argc, char *argv[ ] )
 						//----
 						break;
 					}
-					else if(cache[indice][i].val == 1){
+					else 
 						miss++;
-						miss_conflito++;
-						cache[indice][i].tag = tag;
-						cache[indice][i].val =1;
-						cache[indice][i].info = endereco;
-						CA_val_assoc[i] = 1;
+						if(cache[indice][i].val == 1){
+							miss_conflito++;
+							cache[indice][i].tag = tag;
+							cache[indice][i].val =1;
+							cache[indice][i].info = endereco;
+							CA_val_assoc[i] = 1;
 
-						//-----
-						break;
-					}
-					else if(acha0(CA_val_assoc,assoc) == false){
-						miss++;
-						miss_capacidade++;
-						cache[indice][i].tag = tag;
-						cache[indice][i].val =1;
-						cache[indice][i].info = endereco;
+							//-----
+							break;
+						}
+						else if(acha0(CA_val_assoc,assoc) == false){
+							miss_capacidade++;
+							cache[indice][i].tag = tag;
+							cache[indice][i].val =1;
+							cache[indice][i].info = endereco;
 
-						//----
-						break;	
-					}
-					else if(cache[indice][i].val == 0){
-						miss++;
-						miss_compulsorio++;
-						cache[indice][i].tag = tag;
-						cache[indice][i].val = 1;
-						cache[indice][i].info = endereco;
-						CA_val_assoc[i] = 1;
+							//----
+							break;	
+						}
+						else if(cache[indice][i].val == 0){
+							miss_compulsorio++;
+							cache[indice][i].tag = tag;
+							cache[indice][i].val = 1;
+							cache[indice][i].info = endereco;
+							CA_val_assoc[i] = 1;
 
-						//-----
-						break;
-					}
+							//-----
+							break;
+						}
 				}
 			}
 		}
