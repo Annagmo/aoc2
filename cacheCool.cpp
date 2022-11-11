@@ -56,7 +56,6 @@ int main( int argc, char *argv[ ] )
 	fptr = fopen(arquivoEntrada, "rb"); //rb  para arquivos binarios.
 	//----------------------------------------------------------
 	//variveis apos apresentaçao:
-	int qntdLinhas = 0;
 	int CA_val_assoc[nsets * assoc]={0};
 	int verificaCap = 0;
 	bool flagConflito = false;
@@ -102,12 +101,11 @@ int main( int argc, char *argv[ ] )
 
 					// conflito ou capacidade?
 					for(i=0; i<nsets; i++){          
-						if(cache_val[qntdLinhas] == 0){
+						if(cache_val[i] == 0){
 							miss_conflito++;
 							cache_val[indice] = 1;
 							cache_tag[indice] = tag;
 							flagConflito==true;
-							qntdLinhas++;
 							break;
 						}
 					}
@@ -115,7 +113,6 @@ int main( int argc, char *argv[ ] )
 						miss_capacidade++;
 						cache_val[indice] = 1;
 						cache_tag[indice] = tag;
-						qntdLinhas++;
 						break;
 					}
 				}
@@ -187,4 +184,16 @@ int substitui(char *sub, int bits_val [],int n_bits_indice) {
 	if(*sub == 'r'){
 		return 1 + (rand() % sizeof(n_bits_indice));		// gera aleatório entre 1 e a quantidade total de índice   
 	}
+}
+bool SeEhPot(int num)
+{
+   if (num == 0)
+      return true;
+
+   while( num != 1)//func recursiva
+   {
+      if(num % 2 != 0)
+        return false;
+   }
+   return true;
 }
