@@ -82,7 +82,7 @@ int main( int argc, char *argv[ ] )
 	}else{indice =0;}
 	
 
-	if(nsets == 1){ //Mapeamento Direto
+	if(assoc == 1){ //Mapeamento Direto
 			if (cache_val[indice] == 0)
 			{
 				miss++; 		
