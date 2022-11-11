@@ -16,4 +16,6 @@ Atualizações no código pós apresentação:
   - colocamos um break em cada final de for, para que, depois que a cache ache seu hit ou miss, não fique comparando com os restos dos valores dos outros conjuntos. (antes estávamos contando miss de conflito e compulsório tudo na mesma escrita)
 
 Obstáculos persistentes:
-- para caches grandes temos uma taxa de hit muito alta. Mais de 99%, o que não é condizente com os resultados. Por causa disso, os misses só começam a aparecer lá pela 3⁰-5⁰ casa decimal. Assim, trocamos a impressão *flag 0* para 5 casas decimais, pois era livre, mas não trocamos a de *flag 1* pois já era estipulada nos requisitos do trabalho.
+- para caches grandes temos uma taxa de hit muito alta. Mais de 99%, o que não é condizente com os resultados. 
+Por causa disso, os misses só começam a aparecer lá pela 3⁰-5⁰ casa decimal. 
+Assim, trocamos a impressão *flag 0* para 5 casas decimais, pois era livre, mas não trocamos a de *flag 1* pois já era estipulada nos requisitos do trabalho como contendo 2 casas decimais.
