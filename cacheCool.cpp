@@ -55,8 +55,11 @@ int main( int argc, char *argv[ ] )
 	FILE *fptr;
 	fptr = fopen(arquivoEntrada, "rb"); //rb  para arquivos binarios.
 	//----------------------------------------------------------
+	//variveis apos apresentaçao:
+	int qntdLinhas = 0;
 	int CA_val_assoc[nsets * assoc]={0};
 	int verificaCap = 0;
+
 
 	if(fptr == NULL) {
 		printf("Cannot open file \n");
@@ -73,41 +76,42 @@ int main( int argc, char *argv[ ] )
 	
 	uint32_t mask = 0xffffffff >> n_bits_tag;
 	tag = endereco >> ( n_bits_offset + n_bits_indice );
-	indice = indice >> n_bits_offset;
-	indice = ( endereco & mask );
-	indice = indice >> n_bits_offset;
+	if(nsets!=1){
+		indice = endereco >> n_bits_offset;
+		indice = ( indice & mask );
+	}else{indice =0;}
+	
 
-	if(assoc == 1){ //Mapeamento Direto
-	if (cache_val[indice] == 0)
-	{
-		miss++; 		//nao tava contando os miss_compulsorio pro tot de misses.
-		miss_compulsorio++;
-		cache_val[indice] = 1;
-		cache_tag[indice] = tag;
-		// estas duas últimas instruções representam o tratamento da falta.
-	}
-	else
-		if (cache_tag[indice] == tag)
-			hit++;
-		else 			// a pos cheia e miss
-		{
-			miss++;
-			
-			// conflito ou capacidade?
-			for(i=0; i < sizeof(cache_val); i++){
-				if(cache_val[i] == 0){
-					miss_conflito++;
-					cache_val[indice] = 1;
-					cache_tag[indice] = tag;
-				}
-				else{miss_capacidade++;
-					indice = substitui(subst, cache_val,n_bits_indice);
-					cache_val[indice] = 1;
-					cache_tag[indice] = tag;
-					}
+	if(nsets == 1){ //Mapeamento Direto
+			if (cache_val[indice] == 0)
+			{
+				miss++; 		
+				miss_compulsorio++;
+				cache_val[indice] = 1;
+				cache_tag[indice] = tag;
 			}
-		}
-	} 
+			else
+				if (cache_tag[indice] == tag)
+					hit++;
+				else 			// a pos cheia e miss
+				{
+					miss++;
+
+					// conflito ou capacidade?
+					while(qntdLinhas != (nsets)){          //coloquei um contador ao inves do for p/ percorrer cache
+						if(cache_val[qntdLinhas] == 0){
+							miss_conflito++;
+							cache_val[indice] = 1;
+							cache_tag[indice] = tag;
+						}
+						else{miss_capacidade++;
+							cache_val[indice] = 1;
+							cache_tag[indice] = tag;
+						}
+						qntdLinhas++;
+					}
+				}
+			} 
 	if (assoc != 1) { //Conjunto Associativo
 		for(i=0; i<assoc; i++){
 			if(cache[indice][i].info == endereco &&  cache[indice][i].tag == tag && cache[indice][i].val == 1 ){ //i representa o conjunto naquela posiçao. Ex.: Assoc = 2 temos cache[indice][0] e cache[indice][1]
@@ -119,24 +123,24 @@ int main( int argc, char *argv[ ] )
 			}
 			else 
 				miss++;
-				if(cache[indice][i].val == 1){
-					miss_conflito++;
-					cache[indice][i].tag = tag;
-					cache[indice][i].val =1;
-					cache[indice][i].info = endereco;
-					CA_val_assoc[i] = 1;
-					verificaCap +=1;
-
-					//-----
-					break;
-				}
-				else if(cache[indice][i].val == 0){
+				if(cache[indice][i].val == 0){
 					miss_compulsorio++;
 					cache[indice][i].tag = tag;
 					cache[indice][i].val = 1;
 					cache[indice][i].info = endereco;
 					CA_val_assoc[i] = 1;
 					verificaCap += 1;
+
+					//-----
+					break;
+				}
+				else if(cache[indice][i].val == 1){
+					miss_conflito++;
+					cache[indice][i].tag = tag;
+					cache[indice][i].val =1;
+					cache[indice][i].info = endereco;
+					CA_val_assoc[i] = 1;
+					verificaCap +=1;
 
 					//-----
 					break;
