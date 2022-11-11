@@ -59,7 +59,7 @@ int main( int argc, char *argv[ ] )
 	int qntdLinhas = 0;
 	int CA_val_assoc[nsets * assoc]={0};
 	int verificaCap = 0;
-
+	bool flagConflito = false;
 
 	if(fptr == NULL) {
 		printf("Cannot open file \n");
@@ -67,6 +67,8 @@ int main( int argc, char *argv[ ] )
 	}
 	while (!feof(fptr))
 	{
+
+	flagConflito=false;
 	//para ler o arq binario:
 	unsigned char buffer[4]; 
 	fread(buffer,sizeof(int),1,fptr);
@@ -91,24 +93,30 @@ int main( int argc, char *argv[ ] )
 				cache_tag[indice] = tag;
 			}
 			else
-				if (cache_tag[indice] == tag)
+				if (cache_tag[indice] == tag){
 					hit++;
+				}
 				else 			// a pos cheia e miss
 				{
 					miss++;
 
 					// conflito ou capacidade?
-					while(qntdLinhas != (nsets)){          //coloquei um contador ao inves do for p/ percorrer cache
+					while(qntdLinhas != (nsets)){          
 						if(cache_val[qntdLinhas] == 0){
 							miss_conflito++;
 							cache_val[indice] = 1;
 							cache_tag[indice] = tag;
+							flagConflito==true;
+							qntdLinhas++;
+							break;
 						}
-						else{miss_capacidade++;
-							cache_val[indice] = 1;
-							cache_tag[indice] = tag;
-						}
+					}
+					if(flagConflito==false){
+						miss_capacidade++;
+						cache_val[indice] = 1;
+						cache_tag[indice] = tag;
 						qntdLinhas++;
+						break;
 					}
 				}
 			} 
