@@ -18,5 +18,5 @@ Atualizações no código pós apresentação:
 Obstáculos persistentes:
 - para caches grandes temos uma taxa de hit muito alta. Mais de 99%, o que não é condizente com os resultados. 
 Por causa disso, os misses só começam a aparecer lá pela 3⁰-5⁰ casa decimal. 
-Assim, trocamos a impressão *flag 0* para 5 casas decimais, pois era livre, mas não trocamos a de *flag 1* pois já era estipulada nos requisitos do trabalho como contendo 2 casas decimais.
+Assim, trocamos a impressão *flag 0* para 5 casas decimais, pois era livre, mas não trocamos a de *flag 1* pois já era estipulada nos requisitos do trabalho como tendo 2 casas decimais.
 - Apesar das mudanças não notamos diferença nos resultados testados. Uma possível razão é a inutilização das variáveis de tamanho de bloco neste código.
