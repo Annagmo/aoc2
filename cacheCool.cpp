@@ -188,15 +188,3 @@ int substitui(char *sub, int bits_val [],int n_bits_indice) {
 		return 1 + (rand() % sizeof(n_bits_indice));		// gera aleatório entre 1 e a quantidade total de índice   
 	}
 }
-bool SeEhPot(int num)
-{
-   if (num == 0)
-      return true;
-
-   while( num != 1)//func recursiva
-   {
-      if(num % 2 != 0)
-        return false;
-   }
-   return true;
-}
