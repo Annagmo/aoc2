@@ -6,7 +6,7 @@
 #include <time.h>
 
 int substitui(char *sub, int bits_val [],int n_bits_indice);
-
+bool SeEhPot(int num);
 static void Help(){
 	printf("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
 	printf("\t\tBem-vindo à cacheCool:\n");
@@ -19,15 +19,16 @@ static void Help(){
 
 int main( int argc, char *argv[ ] )
 {
-	if (argc != 7){
-		Help();
-	}
 	int nsets = atoi(argv[1]);
 	int bsize = atoi(argv[2]);
 	int assoc = atoi(argv[3]);
 	char *subst = argv[4];
 	int flagOut = atoi(argv[5]);
 	char *arquivoEntrada = argv[6];
+
+	if (argc != 7 ){
+		Help();
+	}
 
 	int miss_compulsorio =0, n_bits_tag =0, Ncheio = 0, vazio =0;
 	int endereco = 0, tag =0, indice = 0, miss =0, hit =0, i =0, miss_conflito =0, miss_capacidade=0, qtd_acessos=0;
@@ -46,7 +47,6 @@ int main( int argc, char *argv[ ] )
 	typedef struct{
 		int val;
 		int tag;
-		int info;
 	}Cache; //cria uma struct de cache pq vai ter uma posicao em cada conjunto para o mesmo indice
 	Cache cache[nsets * assoc][assoc] = {0}; //inicializa tudo em 0
 
@@ -101,7 +101,7 @@ int main( int argc, char *argv[ ] )
 					miss++;
 
 					// conflito ou capacidade?
-					while(qntdLinhas != (nsets)){          
+					for(i=0; i<nsets; i++){          
 						if(cache_val[qntdLinhas] == 0){
 							miss_conflito++;
 							cache_val[indice] = 1;
@@ -111,7 +111,7 @@ int main( int argc, char *argv[ ] )
 							break;
 						}
 					}
-					if(flagConflito==false){
+					if(flagConflito == false){
 						miss_capacidade++;
 						cache_val[indice] = 1;
 						cache_tag[indice] = tag;
@@ -122,21 +122,18 @@ int main( int argc, char *argv[ ] )
 			} 
 	if (assoc != 1) { //Conjunto Associativo
 		for(i=0; i<assoc; i++){
-			if(cache[indice][i].info == endereco &&  cache[indice][i].tag == tag && cache[indice][i].val == 1 ){ //i representa o conjunto naquela posiçao. Ex.: Assoc = 2 temos cache[indice][0] e cache[indice][1]
+			if(cache[indice][i].tag == tag && cache[indice][i].val == 1 ){ //i representa o conjunto naquela posiçao. Ex.: Assoc = 2 temos cache[indice][0] e cache[indice][1]
 				hit++;
-				CA_val_assoc[i] = 1;
-
 				//----
 				break;
 			}
 			else 
 				miss++;
+
 				if(cache[indice][i].val == 0){
 					miss_compulsorio++;
 					cache[indice][i].tag = tag;
 					cache[indice][i].val = 1;
-					cache[indice][i].info = endereco;
-					CA_val_assoc[i] = 1;
 					verificaCap += 1;
 
 					//-----
@@ -146,19 +143,12 @@ int main( int argc, char *argv[ ] )
 					miss_conflito++;
 					cache[indice][i].tag = tag;
 					cache[indice][i].val =1;
-					cache[indice][i].info = endereco;
-					CA_val_assoc[i] = 1;
-					verificaCap +=1;
-
 					//-----
 					break;
 				}
-				else if(verificaCap == assoc){
+				else if(verificaCap == nsets * assoc){
 					miss_capacidade++;
 					cache[indice][i].tag = tag;
-					cache[indice][i].val =1;
-					cache[indice][i].info = endereco;
-					verificaCap =0;
 					//----
 					break;	
 				}
@@ -166,11 +156,12 @@ int main( int argc, char *argv[ ] )
 		}
 	}
 	qtd_acessos = qtd_acessos-1;//Lembrando que, o -1 pq o acesso do EOF tambem eh 1 acesso
+	hit = hit-1; //a ultima comparação extra do eof quando ele chega no fim do arquivo sempre dá 1 hit a mais.
 	taxa_hit = (((float)hit/qtd_acessos)*100);
 	taxa_miss = (((float)miss/qtd_acessos)*100);
-	taxa_miss_cap = (((float)miss_capacidade/qtd_acessos)*100);
-	taxa_miss_comp = (((float)miss_compulsorio/qtd_acessos)*100);
-	taxa_miss_conf = (((float)miss_conflito/qtd_acessos)*100);
+	taxa_miss_cap = (((float)miss_capacidade/miss)*100);
+	taxa_miss_comp = (((float)miss_compulsorio/miss)*100);
+	taxa_miss_conf = (((float)miss_conflito/miss)*100);
 
 	if(flagOut==0){
 		printf("-------------------------------\n");
@@ -196,4 +187,16 @@ int substitui(char *sub, int bits_val [],int n_bits_indice) {
 	if(*sub == 'r'){
 		return 1 + (rand() % sizeof(n_bits_indice));		// gera aleatório entre 1 e a quantidade total de índice   
 	}
+}
+bool SeEhPot(int num)
+{
+   if (num == 0)
+      return true;
+
+   while( num != 1)//func recursiva
+   {
+      if(num % 2 != 0)
+        return false;
+   }
+   return true;
 }
